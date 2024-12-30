@@ -382,7 +382,7 @@ static void USBD_GetDescriptor(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *r
   uint16_t len = 0U;
   uint8_t *pbuf = NULL;
   uint8_t err = 0U;
-
+  USBD_DbgLog("USBD_GetDescriptor, (req->wValue): %x", req->wValue);
   switch (req->wValue >> 8)
   {
 #if ((USBD_LPM_ENABLED == 1U) || (USBD_CLASS_BOS_ENABLED == 1U))
@@ -421,7 +421,7 @@ static void USBD_GetDescriptor(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *r
         case USBD_IDX_LANGID_STR:
           if (pdev->pDesc->GetLangIDStrDescriptor != NULL)
           {
-            pbuf = pdev->pDesc->GetLangIDStrDescriptor(pdev->dev_speed, &len);
+            pbuf = pdev->pDesc->GetLangIDStrDescriptor(pdev->dev_speed, &len);//////////////////////////////////////////////
           }
           else
           {
@@ -868,7 +868,7 @@ void USBD_ParseSetupRequest(USBD_SetupReqTypedef *req, uint8_t *pdata)
 void USBD_CtlError(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
 {
   UNUSED(req);
-
+  USBD_ErrLog("USBD_CtlError:%02X %02X", req->bRequest, req->bmRequest);
   (void)USBD_LL_StallEP(pdev, 0x80U);
   (void)USBD_LL_StallEP(pdev, 0U);
 }

@@ -19,11 +19,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usart.h"
 #include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -51,7 +53,14 @@
       int8_t wheel;
   };
  
-
+int fputc(int ch, FILE* stream)
+{
+    //USART_SendData(USART1, (unsigned char) ch);
+    //while (!(USART1->SR & USART_FLAG_TXE));
+    //USART_SendChar(USART1, (uint8_t)ch);
+  HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
+  return ch;
+}
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -93,6 +102,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USART1_UART_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
@@ -103,14 +113,14 @@ int main(void)
   struct mouseHID_t mouseHID;
   while (1)
   {
-    /* 发送鼠标报文(一直发送该报文，鼠标会水平向右移动) */
     
     mouseHID.buttons = 0;
     mouseHID.x = 10;
     mouseHID.y = 0;
     mouseHID.wheel = 0;
-    USBD_HID_SendReport(&hUsbDeviceFS, (uint8_t *)&mouseHID, sizeof(struct mouseHID_t));
-    CDC_Transmit_FS((uint8_t *)&mouseHID, sizeof(struct mouseHID_t));
+    //USBD_HID_SendReport(&hUsbDeviceFS, (uint8_t *)&mouseHID, sizeof(struct mouseHID_t));
+    //CDC_Transmit_FS((uint8_t *)&mouseHID, sizeof(struct mouseHID_t));
+    //printf("send mouse report\r\n");
     HAL_Delay(1000);
     /* USER CODE END WHILE */
 

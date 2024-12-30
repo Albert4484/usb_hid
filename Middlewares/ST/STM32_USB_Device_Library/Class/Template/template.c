@@ -313,14 +313,31 @@ static uint8_t USBD_HID_Composite_HID_Init(USBD_HandleTypeDef *pdev, uint8_t cfg
 }
 
 static uint8_t  USBD_Composite_Init (USBD_HandleTypeDef *pdev, uint8_t cfgidx) {
+    uint8_t res = 0;
+    //CDC
     USBD_CDC_RegisterInterface(pdev, &USBD_Interface_fops_FS);
-    USBD_CDC.Init(pdev, cfgidx);
+    res += USBD_CDC.Init(pdev, cfgidx);
     pUSBD_CDC_Handle = pdev->pClassData;
+    if (res != USBD_OK) {
+        USBD_ErrLog("USBD_CDC.Init failed");
+        return res;
+    }
+    else {
+        USBD_UsrLog("USBD_CDC.Init success! CDC_Handle: 0x%p", pUSBD_CDC_Handle);
+    }
 
     //HID
     pdev->pUserData = NULL;
-    USBD_HID.Init(pdev, cfgidx);
+    res += USBD_HID.Init(pdev, cfgidx);
     pUSBD_HID_Handle = pdev->pClassData;
+
+    if (res != USBD_OK) {
+        USBD_ErrLog("USBD_HID.Init failed");
+        return res;
+    }
+    else {
+        USBD_UsrLog("USBD_HID.Init success! HID_Handle: 0x%p", pUSBD_HID_Handle);
+    }
     return USBD_OK;
 }
 
@@ -338,6 +355,13 @@ static uint8_t USBD_Composite_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx) {
 
     USBD_Composite_Switch_HID(pdev);
     res += USBD_HID.DeInit(pdev, cfgidx);
+    if (res != USBD_OK) {
+        USBD_ErrLog("USBD_Composite_DeInit failed");
+    }
+    else {
+        USBD_UsrLog("USBD_Composite_DeInit success!");
+    }
+
     return res;
 }
 
@@ -368,39 +392,48 @@ static uint8_t  USBD_Composite_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqTyp
 
     return USBD_OK;
     */
+    USBD_DbgLog("USBD_Composite_Setup has been called");
     switch (req->bmRequest & USB_REQ_RECIPIENT_MASK)
     {
         case USB_REQ_RECIPIENT_INTERFACE:
+            USBD_DbgLog("USBD_Composite_Setup: USB_REQ_RECIPIENT_INTERFACE");
             switch(req->wIndex)
             {
                 case USBD_CDC_DATA_INTERFACE:
                 case USBD_CDC_CMD_INTERFACE:
+                    USBD_UsrLog("USBD_Composite_Setup: CDC");
                     USBD_Composite_Switch_CDC(pdev);
                     return(USBD_CDC.Setup(pdev, req));
 
                 case USBD_HID_INTERFACE:
+                    USBD_UsrLog("USBD_Composite_Setup: HID");
                     USBD_Composite_Switch_HID(pdev);
                     return(USBD_HID.Setup (pdev, req));
 
                 default:
+                    USBD_UsrLog("[Warning]: USBD_Composite_Setup: default, wIndex: %d", req->wIndex);
                     break;
             }
             break;
 
         case USB_REQ_RECIPIENT_ENDPOINT:
+            USBD_DbgLog("USBD_Composite_Setup: USB_REQ_RECIPIENT_ENDPOINT");
             switch(req->wIndex)
             {
                 case CDC_IN_EP:
                 case CDC_OUT_EP:
                 case CDC_CMD_EP:
+                    USBD_UsrLog("USBD_Composite_Setup: CDC, wIndex: %d", req->wIndex);
                     USBD_Composite_Switch_CDC(pdev);
                     return(USBD_CDC.Setup(pdev, req));
 
                 case HID_EPIN_ADDR:
+                    USBD_UsrLog("USBD_Composite_Setup: HID, wIndex: %d", req->wIndex);
                     USBD_Composite_Switch_HID(pdev);
                     return(USBD_HID.Setup (pdev, req));
 
                 default:
+                    USBD_UsrLog("[Warning]: USBD_Composite_Setup: default, wIndex: %d", req->wIndex);
                     break;
             }
             break;
@@ -474,6 +507,7 @@ static uint8_t  *USBD_Composite_GetHSCfgDesc (uint16_t *length) {
  * @retval pointer to descriptor buffer
  */
 static uint8_t  *USBD_Composite_GetFSCfgDesc (uint16_t *length) {
+    USBD_DbgLog("USBD_Composite_GetFSCfgDesc has been called");
     *length = sizeof(USBD_Composite_CfgFSDesc);
     return USBD_Composite_CfgFSDesc;
 }
@@ -499,6 +533,7 @@ static uint8_t  *USBD_Composite_GetOtherSpeedCfgDesc (uint16_t *length) {
  * @retval pointer to descriptor buffer
  */
 static uint8_t  *USBD_Composite_GetDeviceQualifierDescriptor (uint16_t *length) {
+    USBD_DbgLog("USBD_Composite_GetDeviceQualifierDescriptor has been called");
     *length = sizeof(USBD_Composite_DeviceQualifierDesc);
     return USBD_Composite_DeviceQualifierDesc;
 }
@@ -517,7 +552,7 @@ static uint8_t  USBD_Composite_EP0_RxReady (USBD_HandleTypeDef *pdev) {
     }
     return ret;
     */
-
+    USBD_DbgLog("USBD_Composite_EP0_RxReady has been called");
     USBD_Composite_Switch_CDC(pdev);
     return USBD_CDC.EP0_RxReady(pdev);
     

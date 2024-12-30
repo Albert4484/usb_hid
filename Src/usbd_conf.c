@@ -615,7 +615,11 @@ void *USBD_static_malloc(uint32_t size)
 {
   //static uint32_t mem[(sizeof(USBD_HID_HandleTypeDef)/4)+1];/* On 32-bit boundary */
   //static uint32_t mem[(size/4)+1];/* On 32-bit boundary */
-  uint32_t* mem = (uint32_t*)malloc(size+1);
+  uint32_t* mem = (uint32_t*)malloc(size+size%4+4);
+  if (mem == NULL) {
+    USBD_ErrLog("USBD_static_malloc: malloc failed\n");
+    return NULL;
+  }
   return mem;
 }
 
