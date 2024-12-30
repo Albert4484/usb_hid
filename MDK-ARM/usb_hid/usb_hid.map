@@ -1376,9 +1376,9 @@ Image Symbol Table
     i.__NVIC_SetPriority                     0x0800379e   Section        0  stm32f4xx_hal_cortex.o(i.__NVIC_SetPriority)
     __NVIC_SetPriority                       0x0800379f   Thumb Code    32  stm32f4xx_hal_cortex.o(i.__NVIC_SetPriority)
     i.main                                   0x080037c0   Section        0  main.o(i.main)
-    x$fpl$fpinit                             0x08003808   Section       10  fpinit.o(x$fpl$fpinit)
-    $v0                                      0x08003808   Number         0  fpinit.o(x$fpl$fpinit)
-    .constdata                               0x08003812   Section       16  system_stm32f4xx.o(.constdata)
+    x$fpl$fpinit                             0x0800380c   Section       10  fpinit.o(x$fpl$fpinit)
+    $v0                                      0x0800380c   Number         0  fpinit.o(x$fpl$fpinit)
+    .constdata                               0x08003816   Section       16  system_stm32f4xx.o(.constdata)
     .data                                    0x20000000   Section       28  usbd_desc.o(.data)
     .data                                    0x2000001c   Section       50  usbd_desc.o(.data)
     .data                                    0x20000050   Section       20  usbd_cdc_if.o(.data)
@@ -1768,13 +1768,13 @@ Image Symbol Table
     USB_SetTurnaroundTime                    0x0800368d   Thumb Code   158  stm32f4xx_ll_usb.o(i.USB_SetTurnaroundTime)
     USB_WritePacket                          0x08003775   Thumb Code    40  stm32f4xx_ll_usb.o(i.USB_WritePacket)
     UsageFault_Handler                       0x0800379d   Thumb Code     2  stm32f4xx_it.o(i.UsageFault_Handler)
-    main                                     0x080037c1   Thumb Code    66  main.o(i.main)
-    _fp_init                                 0x08003809   Thumb Code    10  fpinit.o(x$fpl$fpinit)
-    __fplib_config_fpu_vfp                   0x08003811   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    __fplib_config_pureend_doubles           0x08003811   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    AHBPrescTable                            0x08003812   Data          16  system_stm32f4xx.o(.constdata)
-    Region$$Table$$Base                      0x08003824   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08003844   Number         0  anon$$obj.o(Region$$Table)
+    main                                     0x080037c1   Thumb Code    70  main.o(i.main)
+    _fp_init                                 0x0800380d   Thumb Code    10  fpinit.o(x$fpl$fpinit)
+    __fplib_config_fpu_vfp                   0x08003815   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    __fplib_config_pureend_doubles           0x08003815   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    AHBPrescTable                            0x08003816   Data          16  system_stm32f4xx.o(.constdata)
+    Region$$Table$$Base                      0x08003828   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08003848   Number         0  anon$$obj.o(Region$$Table)
     FS_Desc                                  0x20000000   Data          28  usbd_desc.o(.data)
     USBD_LangIDDesc                          0x2000001c   Data           4  usbd_desc.o(.data)
     USBD_FS_DeviceDesc                       0x20000020   Data          18  usbd_desc.o(.data)
@@ -1806,9 +1806,9 @@ Memory Map of the image
 
   Image Entry point : 0x08000189
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00003b8c, Max: 0x00100000, ABSOLUTE, COMPRESSED[0x00003a00])
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00003b90, Max: 0x00100000, ABSOLUTE, COMPRESSED[0x00003a08])
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00003844, Max: 0x00100000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00003848, Max: 0x00100000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -2080,19 +2080,19 @@ Memory Map of the image
     0x0800379c   0x0800379c   0x00000002   Code   RO          543    i.UsageFault_Handler  stm32f4xx_it.o
     0x0800379e   0x0800379e   0x00000020   Code   RO         2096    i.__NVIC_SetPriority  stm32f4xx_hal_cortex.o
     0x080037be   0x080037be   0x00000002   PAD
-    0x080037c0   0x080037c0   0x00000048   Code   RO           15    i.main              main.o
-    0x08003808   0x08003808   0x0000000a   Code   RO         3189    x$fpl$fpinit        fz_wm.l(fpinit.o)
-    0x08003812   0x08003812   0x00000010   Data   RO         2509    .constdata          system_stm32f4xx.o
-    0x08003822   0x08003822   0x00000002   PAD
-    0x08003824   0x08003824   0x00000020   Data   RO         3280    Region$$Table       anon$$obj.o
+    0x080037c0   0x080037c0   0x0000004c   Code   RO           15    i.main              main.o
+    0x0800380c   0x0800380c   0x0000000a   Code   RO         3189    x$fpl$fpinit        fz_wm.l(fpinit.o)
+    0x08003816   0x08003816   0x00000010   Data   RO         2509    .constdata          system_stm32f4xx.o
+    0x08003826   0x08003826   0x00000002   PAD
+    0x08003828   0x08003828   0x00000020   Data   RO         3280    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM2 (Exec base: 0x10000000, Load base: 0x08003a00, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
+    Execution Region RW_IRAM2 (Exec base: 0x10000000, Load base: 0x08003a08, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08003844, Size: 0x00004080, Max: 0x00020000, ABSOLUTE, COMPRESSED[0x000001bc])
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08003848, Size: 0x00004080, Max: 0x00020000, ABSOLUTE, COMPRESSED[0x000001c0])
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -2130,7 +2130,7 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
         44          6          0          0          0        763   gpio.o
-       224         14          0          0          0     649601   main.o
+       228         14          0          0          0     649605   main.o
         64         26        392          0       9216        840   startup_stm32f407xx.o
        180         28          0         12          0       9369   stm32f4xx_hal.o
        198         14          0          0          0      33923   stm32f4xx_hal_cortex.o
@@ -2154,7 +2154,7 @@ Image component sizes
        132          0          0          0          0       4500   usbd_ioreq.o
 
     ----------------------------------------------------------------------
-     12616        662        442        840      15576     835842   Object Totals
+     12620        662        442        840      15576     835846   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         22          0          2         10          0          0   (incl. Padding)
 
@@ -2221,15 +2221,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     13962        740        442        840      15672     819386   Grand Totals
-     13962        740        442        444      15672     819386   ELF Image Totals (compressed)
-     13962        740        442        444          0          0   ROM Totals
+     13966        740        442        840      15672     819390   Grand Totals
+     13966        740        442        448      15672     819390   ELF Image Totals (compressed)
+     13966        740        442        448          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                14404 (  14.07kB)
+    Total RO  Size (Code + RO Data)                14408 (  14.07kB)
     Total RW  Size (RW Data + ZI Data)             16512 (  16.13kB)
-    Total ROM Size (Code + RO Data + RW Data)      14848 (  14.50kB)
+    Total ROM Size (Code + RO Data + RW Data)      14856 (  14.51kB)
 
 ==============================================================================
 

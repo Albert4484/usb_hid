@@ -111,7 +111,7 @@ int main(void)
     mouseHID.wheel = 0;
     USBD_HID_SendReport(&hUsbDeviceFS, (uint8_t *)&mouseHID, sizeof(struct mouseHID_t));
     CDC_Transmit_FS((uint8_t *)&mouseHID, sizeof(struct mouseHID_t));
-    HAL_Delay(10);
+    HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
