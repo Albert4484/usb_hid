@@ -66,7 +66,7 @@
 #define USBD_VID     1155                         // Vendor ID
 #define USBD_LANGID_STRING     1033                // Language ID (English - United States)
 #define USBD_MANUFACTURER_STRING     "STMicroelectronics" // Manufacturer string
-#define USBD_PID_FS     22336                      // Product ID for Full Speed
+#define USBD_PID_FS     22314                      // Product ID for Full Speed
 #define USBD_PRODUCT_STRING_FS     "STM32 Human interface and cdc" // Product string for Full Speed
 #define USBD_CONFIGURATION_STRING_FS     "HID Config" // Configuration string for HID
 #define USBD_INTERFACE_STRING_FS     "HID Interface" // Interface string for HID

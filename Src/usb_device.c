@@ -27,7 +27,7 @@
 #include "usbd_hid.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "usart.h"
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN PV */
@@ -64,6 +64,19 @@ extern USBD_ClassTypeDef USBD_Composite_CDC_HID;
 void MX_USB_DEVICE_Init(void)
 {
   /* USER CODE BEGIN USB_DEVICE_Init_PreTreatment */
+  uint16_t length;
+  uint8_t *pbuf;
+  pbuf = USBD_Composite_CDC_HID.GetFSConfigDescriptor(&length);
+  USBD_UsrLog("GetFSConfigDescriptor,length=%d...0000101", length);
+  HAL_UART_Transmit(&huart1, pbuf, length, 1000);
+  USBD_UsrLog("9999\r\n");
+
+  
+  pbuf = USBD_Composite_CDC_HID.GetDeviceQualifierDescriptor(&length);
+  USBD_UsrLog("GetDeviceQualifierDescriptor,length=%d,,,0000101", length);
+  HAL_UART_Transmit(&huart1, pbuf, length, 1000);
+  USBD_UsrLog("9999\r\n");
+
 	USBD_ErrLog("Test log");
 	USBD_DbgLog("Test log\r\n");
   /* USER CODE END USB_DEVICE_Init_PreTreatment */

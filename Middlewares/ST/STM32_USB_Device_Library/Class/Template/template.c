@@ -63,24 +63,24 @@ __ALIGN_BEGIN uint8_t USBD_Composite_CfgFSDesc[USBD_COMPOSITE_DESC_SIZE] __ALIGN
     /* 配置描述符 */
   0x09,   /* bLength: Configuation Descriptor size */
   USB_DESC_TYPE_CONFIGURATION,   /* bDescriptorType: Configuration */
-  USBD_COMPOSITE_DESC_SIZE,  
-  0x00,
-  USBD_MAX_NUM_INTERFACES ,  /* bNumInterfaces: */
+  LOBYTE(USBD_COMPOSITE_DESC_SIZE),  
+  HIBYTE(USBD_COMPOSITE_DESC_SIZE),//0x00,
+  0x03 ,  /* bNumInterfaces: 3*/
   0x01,   /* bConfigurationValue: 0 配置的值 */
   0x00,   /* iConfiguration: 00 字符串索引 */
   0x80,   /* bmAttributes:no-bus powered and Dissupport Remote Wake-up*/
-  0x32,   /* MaxPower 100 mA  */
+  0x96,   /* MaxPower 300 mA  */
 
 
   /****************************HID************************************/
   /* Interface Association Descriptor */
   USBD_IAD_DESC_SIZE,                        // bLength IAD描述符大小
   USBD_IAD_DESCRIPTOR_TYPE,                  // bDescriptorType IAD描述符类型
-  0x00,                                      // bFirstInterface 接口描述符是在总的配置描述符中的第几个从0开始数
-  0x01,                                      // bInterfaceCount 接口描述符数量
+  0x00,                                      // bFirstInterface 与该功能关联的第一个接口的接口号
+  0x01,                                      // bInterfaceCount 与该功能关联的连续接口的数量
   0x03,                                      // bFunctionClass  设备符中的bDeviceClass
-  0x00,                                      // bFunctionSubClass  设备符中的bDeviceSubClass
-  0x00,                                      // bInterfaceProtocol 设备符中的bDeviceProtocol
+  0x01,                                      // bFunctionSubClass  设备符中的bDeviceSubClass
+  0x02,                                      // bInterfaceProtocol 设备符中的bDeviceProtocol
   0x00,
 
   /********************  HID interface ********************/
@@ -92,15 +92,15 @@ __ALIGN_BEGIN uint8_t USBD_Composite_CfgFSDesc[USBD_COMPOSITE_DESC_SIZE] __ALIGN
   0x00,                   /*bAlternateSetting: Alternate setting  备用接口 */
   0x01,                   /*bNumEndpoints 使用的端点数 1 */
   0x03,                   /*bInterfaceClass: HID*/
-  0x00,                   /*bInterfaceSubClass : 1=BOOT, 0=no boot*/
-  0x00,                   /*nInterfaceProtocol : 0=none, 1=keyboard, 2=mouse*/
-  0,                      /*iInterface: Index of string descriptor*/
+  0x01,                   /*bInterfaceSubClass : 1=BOOT, 0=no boot*/
+  0x02,                   /*nInterfaceProtocol : 0=none, 1=keyboard, 2=mouse*/
+  0x00,                      /*iInterface: Index of string descriptor*/
   
   /******************** Descriptor of Custom HID ********************/
   /* 18 */
   0x09,                   /*bLength: HID Descriptor size*/
   HID_DESCRIPTOR_TYPE,    /*bDescriptorType: HID*/
-  0x00,                   /*bcdHID: HID Class Spec release number*/
+  0x11,                   /*bcdHID: HID Class Spec release number*/
   0x01,
   0x00,                   /*bCountryCode: Hardware target country*/
   0x01,                   /*bNumDescriptors: Number of HID class descriptors to follow*/
@@ -126,16 +126,15 @@ __ALIGN_BEGIN uint8_t USBD_Composite_CfgFSDesc[USBD_COMPOSITE_DESC_SIZE] __ALIGN
   USBD_IAD_DESCRIPTOR_TYPE,         // bDescriptorType
   0x01,                             // bFirstInterface 接口描述符是在总的配置描述符中的第几个从0开始数 1
   0x02,                             // bInterfaceCount 接口描述符数量 2
-  0x02,                             // bFunctionClass     CDC Control
-  0x02,                             // bFunctionSubClass  Abstract Control Model
+  0x02,                             // bFunctionClass     CDC类0x02
+  0x02,                             // bFunctionSubClass  0x00:通信控制类 0x01:数据接口
   0x01,                             // bInterfaceProtocol  AT Commands: V.250 etc
   0x00,                             // iFunction
   
   /* CDC命令接口描述符 */
   /*Interface Descriptor */
   0x09,   /* bLength: Interface Descriptor size 长度 */
-  USB_DESC_TYPE_INTERFACE,  /* bDescriptorType: Interface 接口编号0x04 */
-  /* Interface descriptor type */
+  USB_DESC_TYPE_INTERFACE,  /* bDescriptorType: Interface 描述符类型：接口描述符 */
   USBD_CDC_CMD_INTERFACE,   /* bInterfaceNumber: Number of Interface 接口编号，第一个接口编号为1 */
   0x00,   /* bAlternateSetting: Alternate setting 接口备用编号 0 */
   0x01,   /* bNumEndpoints: One endpoints used 非0端点的数目 1 cdc接口只使用了一个中断输入端点 */
@@ -174,7 +173,7 @@ __ALIGN_BEGIN uint8_t USBD_Composite_CfgFSDesc[USBD_COMPOSITE_DESC_SIZE] __ALIGN
 
   /*Endpoint 2 Descriptor*/
   0x07,                           /* bLength: Endpoint Descriptor size */
-  USB_DESC_TYPE_ENDPOINT,   			/* bDescriptorType: Endpoint */
+  USB_DESC_TYPE_ENDPOINT,   			/* bDescriptorType: Endpoint 端点描述符 */
   CDC_CMD_EP,                     /* bEndpointAddress */
   0x03,                           /* bmAttributes: Interrupt */
   LOBYTE(CDC_CMD_PACKET_SIZE),    /* wMaxPacketSize: */
@@ -200,8 +199,8 @@ __ALIGN_BEGIN uint8_t USBD_Composite_CfgFSDesc[USBD_COMPOSITE_DESC_SIZE] __ALIGN
   USB_DESC_TYPE_ENDPOINT,               /* bDescriptorType: Endpoint 端点描述符编号为0x05 */
   CDC_OUT_EP,                           /* bEndpointAddress 端点的地址0x02 D7为方向*/
   0x02,                                 /* bmAttributes: Bulk 批量传输*/
-  LOBYTE(CDC_DATA_HS_MAX_PACKET_SIZE),  /* wMaxPacketSize: 端点的最大包长 512字节*/
-  HIBYTE(CDC_DATA_HS_MAX_PACKET_SIZE),
+  LOBYTE(CDC_DATA_FS_MAX_PACKET_SIZE),  /* wMaxPacketSize: 端点的最大包长 512字节*/
+  HIBYTE(CDC_DATA_FS_MAX_PACKET_SIZE),
   0x00,                                 /* bInterval: ignore for Bulk transfer 端点查询时间，对批量端点无效 */
 
 	/* 输入端点的端点描述符 */
@@ -210,8 +209,8 @@ __ALIGN_BEGIN uint8_t USBD_Composite_CfgFSDesc[USBD_COMPOSITE_DESC_SIZE] __ALIGN
   USB_DESC_TYPE_ENDPOINT,               /* bDescriptorType: Endpoint 端点描述符编号为0x05*/
   CDC_IN_EP,                            /* bEndpointAddress 端点的地址0x82 D7为方向*/
   0x02,                                 /* bmAttributes: Bulk 批量传输*/
-  LOBYTE(CDC_DATA_HS_MAX_PACKET_SIZE),  /* wMaxPacketSize: 端点的最大包长 512字节*/
-  HIBYTE(CDC_DATA_HS_MAX_PACKET_SIZE),
+  LOBYTE(CDC_DATA_FS_MAX_PACKET_SIZE),  /* wMaxPacketSize: 端点的最大包长 512字节*/
+  HIBYTE(CDC_DATA_FS_MAX_PACKET_SIZE),
   0x00                                  /* bInterval: ignore for Bulk transfer 端点查询时间，对批量端点无效*/
 };
 

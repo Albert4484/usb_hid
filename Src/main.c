@@ -118,10 +118,10 @@ int main(void)
     mouseHID.x = 10;
     mouseHID.y = 0;
     mouseHID.wheel = 0;
-    //USBD_HID_SendReport(&hUsbDeviceFS, (uint8_t *)&mouseHID, sizeof(struct mouseHID_t));
+    USBD_HID_SendReport(&hUsbDeviceFS, (uint8_t *)&mouseHID, sizeof(struct mouseHID_t));
     //CDC_Transmit_FS((uint8_t *)&mouseHID, sizeof(struct mouseHID_t));
     //printf("send mouse report\r\n");
-    HAL_Delay(1000);
+    HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
